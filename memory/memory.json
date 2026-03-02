@@ -1,0 +1,19 @@
+{
+  "version": "2.0",
+  "entries": [
+    {
+      "key": "accreditex-documentation-audit-march-2026",
+      "value": "AccreditEx project documentation audit completed March 3, 2026. Key findings: 626 src files, 39 pages, 295 components, 13 Zustand stores, 107 services, 27 hooks, 37 utils, 12 type files, 45 i18n locales. 31+ obsolete files removed (15 tsc dumps, logs/ folder, empty ai-agent dirs, stale build artifacts). docs/ARCHITECTURE.md created as codebase reference. 4 undocumented stores discovered: useChangeControlStore, useModuleStore, useSupplierStore, useTenantStore. 3 broken doc links fixed. Test coverage badge claims 95% but only 28 test files + 1 E2E spec exist. Real i18n lives in src/data/locales/ not src/i18n/.",
+      "tags": [
+        "documentation",
+        "project-metrics",
+        "audit-results",
+        "architecture"
+      ],
+      "score": 0.95,
+      "created_at": "2026-03-02T21:31:26.412Z",
+      "updated_at": "2026-03-02T21:31:26.414Z",
+      "access_count": 0
+    }
+  ]
+}

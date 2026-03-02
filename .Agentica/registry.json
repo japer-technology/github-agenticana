@@ -1,0 +1,10 @@
+{
+  "installed": {},
+  "last_sync": null,
+  "config": {
+    "sources": [
+      "https://raw.githubusercontent.com/ashrafmusa/agenticana/main/exchange/manifest.json"
+    ],
+    "auto_update": false
+  }
+}

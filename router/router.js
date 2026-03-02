@@ -1,9 +1,9 @@
 /**
  * Agenticana v2 — Model Router
- * 
+ *
  * Main routing engine. Combines complexity score + token estimation
  * to produce a routing decision: { model, strategy, skills, estimatedTokens }
- * 
+ *
  * Usage:
  *   const router = require('./router');
  *   const decision = router.route({ task, agentName, skills, AgenticanaRoot });
@@ -17,7 +17,7 @@ const config                                                           = require
 
 /**
  * Route a task to the optimal model and context strategy
- * 
+ *
  * @param {object} params
  * @param {string}   params.task           - User task description
  * @param {string}   params.agentName      - Agent to invoke (e.g. 'frontend-specialist')
@@ -67,6 +67,17 @@ function route({ task, agentName, skills = [], rb_similarity = 0, AgenticanaRoot
   // ── Step 6: Compose decision ──────────────────────────────────────────────
   const modelName = config.models[finalTier];
 
+  // 🦞 Step 6.1: Handshake Suggestion (Efficiency Upgrade)
+  const suggestsHandshake = score >= 5 || finalEstimate.estimated_tokens > 20000;
+  const handshake = suggestsHandshake ? {
+    recommended: true,
+    steps: [
+      "1. Phase 1: SCOUT (flash-lite) - Perform file discovery & search",
+      "2. Phase 2: TRIM (local) - Use context_trimmer.py to shrink file context",
+      "3. Phase 3: BUILD (pro) - Implementation with high accuracy/low cost"
+    ]
+  } : null;
+
   /** @type {RouterDecision} */
   const decision = {
     model: modelName,
@@ -79,6 +90,7 @@ function route({ task, agentName, skills = [], rb_similarity = 0, AgenticanaRoot
     complexity_score: score,
     complexity_breakdown: complexityBreakdown,
     reasoning_bank_similarity: rb_similarity,
+    handshake_suggestion: handshake,
     token_savings_estimate: skills.length > filteredSkills.length
       ? `~${Math.round((1 - filteredSkills.length / skills.length) * 100)}% from skill filtering`
       : 'none',

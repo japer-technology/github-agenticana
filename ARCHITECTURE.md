@@ -63,6 +63,10 @@ graph TB
         RCLI[router_cli.py]
         DP[distill_patterns.py]
         VA[verify_all.py]
+        HBD[heartbeat_daemon.py]
+        SI[soul_inject.py]
+        CUI[capture_ui.py]
+        NOTY[notify.ps1]
     end
 
     U --> C0
@@ -73,7 +77,9 @@ graph TB
     TE --> RC
     RT --> C2
     C2 --> C3
-    C3 --> AGENTS
+    C3 --> SI
+    SI --> RB
+    SI -->|soul memory block| AGENTS
     AGENTS --> SKILLS
     AGENTS -->|record decision| RBC
     RBC --> RB
@@ -81,6 +87,8 @@ graph TB
     SRV --> RBT & RTOOL & ATOOL & MTOOL
     RBT --> RBC
     RTOOL --> RCLI
+    HBD --> VA & DP & NOTY
+    TE & FE --> CUI
 ```
 
 ---
@@ -149,7 +157,7 @@ Every `.md` file now has a companion `.yaml` with:
 name: frontend-specialist
 version: "2.0.0"
 model_tier: pro          # default model tier
-complexity_tier: MODERATE 
+complexity_tier: MODERATE
 token_budget:
   context_max: 60000
   output_max: 6000
@@ -231,6 +239,10 @@ routing_hints:
 | `router_cli.py` | `python scripts/router_cli.py --stats` | Show config |
 | `distill_patterns.py` | `python scripts/distill_patterns.py` | Extract patterns |
 | `verify_all.py` | `python scripts/verify_all.py .` | Full project audit |
+| `heartbeat_daemon.py` | `python scripts/heartbeat_daemon.py` | Background maintenance |
+| `soul_inject.py` | `python scripts/soul_inject.py "task"` | Retrieve Soul Memory |
+| `capture_ui.py` | `python scripts/capture_ui.py "url"` | Visual verification |
+| `notify.ps1` | `powershell -File scripts/notify.ps1` | Audio/Visual Alert |
 
 ---
 

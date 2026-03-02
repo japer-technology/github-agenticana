@@ -136,19 +136,50 @@ When auto-applying an agent, inform the user:
 | 2 | Did I READ the agent's `.md` file (or recall its rules)? | → STOP. Open `.agent/agents/{agent}.md` |
 | 3 | Did I announce `🤖 Applying knowledge of @[agent]...`? | → STOP. Add announcement before response. |
 | 4 | Did I load required skills from agent's frontmatter? | → STOP. Check `skills:` field and read them. |
-
-**Failure Conditions:**
-
-- ❌ Writing code without identifying an agent = **PROTOCOL VIOLATION**
-- ❌ Skipping the announcement = **USER CANNOT VERIFY AGENT WAS USED**
-- ❌ Ignoring agent-specific rules (e.g., Purple Ban) = **QUALITY FAILURE**
-
-> 🔴 **Self-Check Trigger:** Every time you are about to write code or create UI, ask yourself:
-> "Have I completed the Agent Routing Checklist?" If NO → Complete it first.
+| 5 | **DID I RECOMMEND THE OPTIMAL MODEL?** | → **NEW**: See Response Format below. |
 
 ---
 
-## TIER 0: UNIVERSAL RULES (Always Active)
+## 🤖 RESPONSE FORMAT (Lobster Standard 🦞)
+
+**When responding in VS Code Copilot, always include the Efficiency Handshake advice:**
+
+```markdown
+🤖 **Applying knowledge of `@agent`...**
+⚖️ **Model Recommendation**: `[PRO / FLASH]` (Based on Complexity `X.X`)
+
+[Specialized Response]
+```
+
+> [!TIP]
+> **VS Code Note**: Agentica calculates the best model for cost/accuracy, but you must manually select it in the Copilot Chat dropdown to match the recommendation.
+
+---
+
+---
+
+---
+
+ ## ⚖️ EFFICIENCY HANDSHAKE (TIER 0)
+
+ > 🔴 **MANDATORY for LARGE FILE EDITS and ARCHITECTURAL TASKS.**
+
+ 1. **Phase 1: Scout (Flash-Lite)**:
+     - Run `grep_search` or `find_by_name` to identify relevant files/lines.
+     - **Autonomy**: Scout has full autonomy to read and search.
+ 2. **Phase 2: Context Trimming**:
+     - Use `python scripts/context_trimmer.py {file} {pattern} {window}`.
+     - **Window Size**: 50 lines (Standard) / 100+ lines (Architectural).
+ 3. **Phase 3: The Handshake**:
+     - Pass the *trimmed* context to the **Builder (Pro)** model.
+ 4. **Phase 4: Sentry Verify**:
+     - Use cheaper model to verify Pro's output.
+     - **Regression Check**: If an error is detected → **STOP & ASK**.
+
+ ---
+
+-## TIER 0: UNIVERSAL RULES (Always Active)
++## TIER 0: UNIVERSAL RULES (Always Active)
 
 ### 🌐 Language Handling
 
