@@ -15,7 +15,14 @@ def get_auth_key():
 
 class DashboardHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
-        # 1. Security Gate: Check for API Key
+        # 1. Root Redirect
+        if self.path == '/':
+            self.send_response(301)
+            self.send_header('Location', '/dashboard/index.html')
+            self.end_headers()
+            return
+
+        # 2. Security Gate: Check for API Key
         auth_header = self.headers.get('X-Agentica-Auth')
         expected_key = get_auth_key()
 
@@ -27,16 +34,17 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
 
         if self.path == '/api/status':
             self.send_response(200)
-            self.send_header('Content-type', 'application/json')
+            self.send_header('Content-Type', 'application/json')
             self.send_header('Access-Control-Allow-Origin', '*')
             self.send_header('Access-Control-Allow-Headers', 'X-Agentica-Auth')
             self.end_headers()
-            # ... rest of status logic ...
 
             # Aggregate status
+            from datetime import datetime
             status = {
                 "project": "Agent Americana",
-                "version": "3.0.0 (Evolution)",
+                "version": "v4.0.0 (A.I.R EDITION)",
+                "timestamp": datetime.now().isoformat(),
                 "heartbeat": self.get_latest_heartbeat(),
                 "swarm": self.get_latest_swarm(),
                 "registry": self.get_registry_count(),
@@ -72,7 +80,7 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
         return 0
 
 if __name__ == "__main__":
+    socketserver.TCPServer.allow_reuse_address = True
     print(f"[*] Starting Agentica Control Center API on http://127.0.0.1:{PORT}...")
-    # Bind to localhost only for security
     with socketserver.TCPServer(("127.0.0.1", PORT), DashboardHandler) as httpd:
         httpd.serve_forever()

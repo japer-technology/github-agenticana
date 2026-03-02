@@ -3,89 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agentica Control Center | v3.0</title>
+    <title>Agentica | Sovereign Control Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#0b0f1a',
+                            dark: '#1e293b',
+                            accent: '#38bdf8',
+                            success: '#10b981',
+                            warning: '#f59e0b',
+                            danger: '#ef4444',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Outfit', sans-serif; background: #0b0f1a; color: #e2e8f0; }
+        body { background-color: #0b0f1a; color: #e2e8f0; }
         .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .accent-gradient { background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%); }
+        .glow-accent { box-shadow: 0 0 20px rgba(56, 189, 248, 0.2); }
+        .anim-pulse-slow { animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
     </style>
 </head>
-<body class="p-8">
-    <div class="max-w-6xl mx-auto">
-        <!-- Header -->
-        <header class="flex justify-between items-center mb-12">
+<body class="min-h-screen p-4 md:p-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Dashboard Header -->
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div>
-                <h1 class="text-4xl font-bold tracking-tight text-white mb-2">Agentica Control Center</h1>
-                <p class="text-slate-400">Project: <span class="text-sky-400 font-semibold">Agent Americana</span> | Status: <span class="text-emerald-400">OPTIMIZED</span></p>
+                <div class="flex items-center gap-3 mb-1">
+                    <div class="w-3 h-3 rounded-full bg-brand-accent glow-accent anim-pulse-slow"></div>
+                    <h1 class="text-3xl font-bold tracking-tight text-white font-sans">Agentica Control Center</h1>
+                </div>
+                <p class="text-slate-400 font-sans text-sm">System: <span class="text-brand-accent" id="project-name">...</span> | Build: <span class="text-slate-300 font-mono" id="system-version">v4.0.0-AIR</span></p>
             </div>
-            <div class="glass px-6 py-2 rounded-full text-sm font-medium">
-                v3.0.0-evolution
+            <div class="flex items-center gap-4">
+                <button onclick="localStorage.removeItem('agentica_auth'); location.reload();" class="glass px-4 py-2 rounded-xl text-xs hover:bg-white/10 transition-colors">Reset Key</button>
+                <div class="glass px-6 py-2 rounded-2xl text-xs font-mono border-brand-accent/30 text-brand-accent uppercase tracking-widest" id="server-status">Connecting...</div>
             </div>
         </header>
 
         <!-- Stats Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-            <div class="glass p-6 rounded-2xl">
-                <p class="text-slate-400 text-sm mb-1">Heartbeat</p>
-                <p class="text-2xl font-bold text-emerald-400">ACTIVE</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="glass p-6 rounded-3xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                </div>
+                <p class="text-slate-400 text-sm mb-1 uppercase tracking-wider font-semibold">Heartbeat</p>
+                <p class="text-3xl font-bold text-brand-success" id="stat-heartbeat">OFFLINE</p>
+                <div class="mt-2 h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div class="h-full bg-brand-success w-full opacity-50"></div>
+                </div>
             </div>
-            <div class="glass p-6 rounded-2xl">
-                <p class="text-slate-400 text-sm mb-1">Soul Memory</p>
-                <p class="text-2xl font-bold text-white">RAG-ENHANCED</p>
+            <div class="glass p-6 rounded-3xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <p class="text-slate-400 text-sm mb-1 uppercase tracking-wider font-semibold">Soul Memory</p>
+                <p class="text-3xl font-bold text-white"><span id="stat-memory">0</span> <span class="text-sm font-normal text-slate-500">KIs/Docs</span></p>
+                <div class="mt-2 text-xs text-brand-accent">RAG-Enhanced Indexing</div>
             </div>
-            <div class="glass p-6 rounded-2xl">
-                <p class="text-slate-400 text-sm mb-1">Registry</p>
-                <p class="text-2xl font-bold text-white">2 <span class="text-sm font-normal text-slate-500">Components</span></p>
+            <div class="glass p-6 rounded-3xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                </div>
+                <p class="text-slate-400 text-sm mb-1 uppercase tracking-wider font-semibold">Registry</p>
+                <p class="text-3xl font-bold text-white"><span id="stat-registry">0</span> <span class="text-sm font-normal text-slate-500">Components</span></p>
+                <div class="mt-2 text-xs text-slate-500 font-mono" id="stat-registry-sub">v4.0.0-Stable</div>
             </div>
-            <div class="glass p-6 rounded-2xl">
-                <p class="text-slate-400 text-sm mb-1">Swarm Pulse</p>
-                <p class="text-2xl font-bold text-sky-400">IDLE</p>
+            <div class="glass p-6 rounded-3xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <p class="text-slate-400 text-sm mb-1 uppercase tracking-wider font-semibold">Latest Swarm</p>
+                <p class="text-3xl font-bold text-brand-accent" id="stat-swarm">IDLE</p>
+                <div class="mt-2 text-xs text-slate-500" id="stat-swarm-time">No active sessions</div>
             </div>
         </div>
 
-        <!-- Main View -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Swarm Logs -->
-            <div class="lg:col-span-2 glass rounded-3xl overflow-hidden">
-                <div class="px-8 py-6 border-b border-white/5 flex justify-between items-center">
-                    <h2 class="text-xl font-semibold">Task Swarm Logs</h2>
-                    <span class="text-xs text-sky-400 font-mono tracking-widest uppercase">Real-time Feed</span>
+        <!-- Main Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Swarm Activity Feed -->
+            <div class="lg:col-span-8 glass rounded-[32px] overflow-hidden flex flex-col glow-accent">
+                <div class="px-8 py-5 border-b border-white/5 flex justify-between items-center bg-white/5">
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        <svg class="w-5 h-5 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Shadow Swarm Feed
+                    </h2>
+                    <span class="px-3 py-1 bg-brand-accent/10 rounded-full text-[10px] text-brand-accent font-mono border border-brand-accent/20">LIVE_OUTPUT</span>
                 </div>
-                <div class="p-8 space-y-4 font-mono text-sm">
-                    <div class="flex gap-4">
-                        <span class="text-slate-500">[02:14:10]</span>
-                        <span class="text-sky-400">[*]</span>
-                        <span>Initializing Swarm Dispatcher...</span>
-                    </div>
-                    <div class="flex gap-4">
-                        <span class="text-slate-500">[02:14:11]</span>
-                        <span class="text-purple-400">[&ast;]</span>
-                        <span>Agent 'database-architect': Syncing vector store...</span>
-                    </div>
-                    <div class="flex gap-4">
-                        <span class="text-slate-500">[02:14:12]</span>
-                        <span class="text-emerald-400">[+]</span>
-                        <span>P6 Deployment Complete.</span>
+                <div class="p-4 md:p-8 sm:h-[450px] overflow-y-auto font-mono text-sm space-y-3 scrollbar-hide" id="log-container">
+                    <!-- Logs injected here -->
+                    <div class="flex gap-4 opacity-50">
+                        <span class="text-slate-500 tracking-tighter">Initializing Agentica Runtime...</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Visual Node Capture -->
-            <div class="glass rounded-3xl p-8">
-                <h2 class="text-xl font-semibold mb-6">Visual Research</h2>
-                <div class="relative rounded-2xl overflow-hidden bg-slate-900 border border-white/5">
-                    <div class="h-48 flex items-center justify-center text-slate-600">
-                        <svg class="w-12 h-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
+            <!-- Side Panels -->
+            <div class="lg:col-span-4 space-y-8">
+                <!-- Visual Intelligence -->
+                <div class="glass rounded-[32px] p-6">
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                        Visual Audits
+                    </h3>
+                    <div class="aspect-video rounded-2xl bg-brand-black/50 border border-white/10 flex items-center justify-center relative overflow-hidden group">
+                        <img id="visual-preview" src="" alt="" class="w-full h-full object-cover opacity-0 transition-opacity duration-500">
+                        <div id="visual-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-slate-600">
+                            <svg class="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            <span class="text-xs font-mono uppercase tracking-widest">No Captures Found</span>
+                        </div>
                     </div>
-                    <div class="absolute bottom-4 left-4 right-4 bg-slate-900/80 backdrop-blur p-3 rounded-lg text-xs">
-                        Latest: <span class="text-slate-300">cli_exchange_demo.png</span>
+                    <div class="mt-4 p-3 bg-brand-black/40 rounded-xl border border-white/5 text-[10px] font-mono flex justify-between">
+                        <span class="text-slate-500 italic">Latest:</span>
+                        <span class="text-brand-accent" id="visual-filename">none</span>
+                    </div>
+                </div>
+
+                <!-- Sandbox Mode -->
+                <div class="glass rounded-[32px] p-6 border-brand-accent/10">
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                        Shadow Sandbox
+                    </h3>
+                    <div class="p-4 bg-brand-accent/5 rounded-2xl border border-brand-accent/10">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-semibold uppercase text-brand-accent tracking-tighter">Status</span>
+                            <span class="px-2 py-0.5 bg-brand-accent/20 rounded text-[9px] text-brand-accent font-bold">ACTIVE_ISOLATION</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 leading-relaxed font-sans mb-3">Changes are being audited in <span class="text-slate-300 font-mono">.Agentica/shadow_sandbox</span> before production merge.</p>
+                        <div class="flex gap-2">
+                            <div class="h-1.5 w-1/3 bg-brand-accent rounded-full"></div>
+                            <div class="h-1.5 w-1/3 bg-white/10 rounded-full"></div>
+                            <div class="h-1.5 w-1/3 bg-white/10 rounded-full"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
         </div>
     </div>
 
@@ -110,22 +175,62 @@
                     return;
                 }
 
+                if (!response.ok) throw new Error("Server error");
+
                 const data = await response.json();
                 updateUI(data);
+                document.getElementById('server-status').innerText = "System Synced";
+                document.getElementById('server-status').classList.replace('text-brand-danger', 'text-brand-accent');
             } catch (err) {
-                console.error("Failed to fetch dashboard status:", err);
+                console.error("Dashboard Sync Failed:", err);
+                document.getElementById('server-status').innerText = "Connection Lost";
+                document.getElementById('server-status').classList.add('text-brand-danger');
             }
         }
 
         function updateUI(data) {
-            // Logic to update the DOM elements with live data
-            console.log("Dashboard Sync:", data);
-            // ... (OMITTED FOR BREVITY, but functional in logic)
+            document.getElementById('project-name').innerText = data.project || 'Unknown';
+            document.getElementById('system-version').innerText = data.version || 'v1.0';
+
+            // Heartbeat
+            const hb = document.getElementById('stat-heartbeat');
+            hb.innerText = data.heartbeat || 'INACTIVE';
+            hb.className = data.heartbeat === 'Active' ? 'text-3xl font-bold text-brand-success' : 'text-3xl font-bold text-brand-danger';
+
+            // Counts
+            document.getElementById('stat-memory').innerText = data.vector_memory || 0;
+            document.getElementById('stat-registry').innerText = data.registry || 0;
+
+            // Swarm
+            const swarm = document.getElementById('stat-swarm');
+            const swarmTime = document.getElementById('stat-swarm-time');
+            if (data.swarm && data.swarm.tasks && data.swarm.tasks.length > 0) {
+                swarm.innerText = "COMPLETED";
+                swarmTime.innerText = `Last swarm: ${new Date(data.swarm.timestamp).toLocaleTimeString()}`;
+
+                // Update Logs
+                const logContainer = document.getElementById('log-container');
+                logContainer.innerHTML = '';
+                data.swarm.tasks.forEach(task => {
+                    const entry = document.createElement('div');
+                    entry.className = "flex flex-col md:flex-row gap-2 border-l-2 border-white/5 pl-4 py-1";
+                    const statusColor = task.status === 'COMPLETED' ? 'text-brand-success' : 'text-brand-danger';
+                    entry.innerHTML = `
+                        <span class="text-[10px] text-slate-500 w-24">${task.duration}</span>
+                        <span class="${statusColor} w-24 font-bold">[${task.status}]</span>
+                        <span class="text-slate-300">Agent '${task.agent}' finished: ${task.id}</span>
+                    `;
+                    logContainer.appendChild(entry);
+                });
+            } else {
+                swarm.innerText = "IDLE";
+                swarmTime.innerText = "No sessions found";
+            }
         }
 
         // Initialize
         fetchStatus();
-        setInterval(fetchStatus, 30000); // Refresh every 30s
+        setInterval(fetchStatus, 3000); // Fast refresh for 4.0
     </script>
 </body>
 </html>
