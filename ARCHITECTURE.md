@@ -248,6 +248,7 @@ routing_hints:
 | `notify.ps1` | `powershell -File scripts/notify.ps1` | Audio/Visual Alert |
 | `swarm_dispatcher.py` | `python scripts/swarm_dispatcher.py manifest.json --shadow` | Parallel & Isolated agent execution |
 | `sandbox_manager.py` | `python scripts/sandbox_manager.py` | Environment isolation & merge |
+| `simulacrum.py` | `python scripts/simulacrum.py "topic" --agents backend-specialist security-auditor` | Multi-agent architecture debate |
 | `swarm_status.py` | `python scripts/swarm_status.py` | Real-time swarm monitoring |
 | `sentinel.py` | `python scripts/sentinel.py` | Autonomous error repair |
 | `vector_memory.py` | `python scripts/vector_memory.py` | Lightweight semantic store |
