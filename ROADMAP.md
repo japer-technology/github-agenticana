@@ -64,11 +64,13 @@ This is the living roadmap for Agenticana. Items marked **open** are available f
 **Good for:** Python developer interested in DSL design
 [Start a Discussion →](https://github.com/ashrafmusa/agenticana/discussions/new)
 
-### P25: The Sovereign Loop (Autonomy)
+### P25: The Sovereign Loop (Aggressive Autonomy)
 **Status:** 🚀 **PROPOSAL**
-**Idea:** Close the loop. Agents monitor GitHub issues → Use NL Swarm to self-patch → Shadow Sandbox to verify → Guardian to commit. True self-evolution of the Secretary Bird.
-**Good for:** Deep AI engineering / Systems architecture
-[Start a Discussion →](https://github.com/ashrafmusa/agenticana/discussions/new)
+**Mechanism:**
+1. **Intel Swarm**: Monitor competitor repos (e.g., `openclaw/openclaw`) for trending feature requests.
+2. **Self-Development**: Use NL Swarm to auto-implement missing features.
+3. **Auto-Merge**: Enable `auto-merge` if Shadow Sandbox + Guardian marks the PR as **CERTIFIED (Trust Score > 90)**.
+**Goal:** A repo that evolves faster than its competitors by self-monitoring and self-patching.
 
 ---
 
