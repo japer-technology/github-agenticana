@@ -1,79 +1,135 @@
 <div align="center">
 
-<img width="676" height="532" alt="Logo" src="https://github.com/user-attachments/assets/d27a494b-65ee-4265-9ae7-5aae4b5e6753" />
+<img width="676" height="532" alt="Agenticana Secretary Bird" src="https://github.com/user-attachments/assets/d27a494b-65ee-4265-9ae7-5aae4b5e6753" />
 
+# Agenticana v6.0 🦅
 
-# Agenticana v2
-
-### The Self-Learning AI Agent Kit for VS Code & GitHub Copilot
+### The Sovereign AI Developer OS — Secretary Bird Edition
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Node.js](https://img.shields.io/badge/Node.js-20%2B-green.svg)](https://nodejs.org)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](https://python.org)
+[![Node.js](https://img.shields.io/badge/Node.js-20%2B-green.svg)](https://nodejs.org)
 [![MCP](https://img.shields.io/badge/MCP-Compatible-purple.svg)](https://modelcontextprotocol.io)
 [![VS Code](https://img.shields.io/badge/VS%20Code-GitHub%20Copilot-blue.svg)](https://code.visualstudio.com)
+[![Guardian](https://img.shields.io/badge/Guardian-Active-brightgreen.svg)](#-p16-guardian-mode)
 [![GitHub Stars](https://img.shields.io/github/stars/ashrafmusa/AGENTICANA?style=social)](https://github.com/ashrafmusa/AGENTICANA)
 
-**20 specialist agents · ReasoningBank · Model Router · MCP Server · Self-Learning**
+**20 specialist agents · Swarm Dispatcher · Logic Simulacrum · Guardian Mode · Proof-of-Work · Self-Sovereign**
 
-[Quick Start](#-quick-start) · [Features](#-features) · [Agents](#-20-specialist-agents) · [Compare](#-vs-competitors) · [Docs](#-documentation)
+[Quick Start](#-quick-start) · [What It Does](#-what-agenticana-does) · [Phases](#-phases-p1--p19) · [Agents](#-20-specialist-agents) · [vs Competitors](#-vs-competitors) · [CLI](#-cli-reference)
 
 </div>
 
 ---
 
-## What Is Agenticana?
+## What is Agenticana?
 
-Agenticana is a **production-grade AI agent kit** that plugs into VS Code and GitHub Copilot. It gives your AI assistant a **persistent memory**, **intelligent model routing**, and **20 specialist agents** that know your exact codebase patterns — getting smarter every time you use it.
+Agenticana is a **Sovereign AI Developer OS** — not a chat assistant, not a VS Code plugin, but a full orchestration framework that deploys, coordinates, audits, and self-governs multiple AI agents **directly inside your codebase**.
 
 ```
-Before Agenticana:  Generic Copilot response → same answer every time
-After Agenticana:   "Found similar pattern (similarity: 0.91). Reusing the auth decision from 2 weeks ago..."
+┌──────────────────────────────────────────────────────────┐
+│                     YOUR PROJECT                          │
+│                                                           │
+│  ┌────────────────────────────────────────────────────┐   │
+│  │             AGENTICANA v6.0 🦅                     │   │
+│  │         (The Sovereign Developer OS)               │   │
+│  │                                                    │   │
+│  │  Swarm · Sentinel · Simulacrum · Guardian · NL     │   │
+│  │  ADR Generator · Proof-of-Work · Soul Bridge       │   │
+│  └──────────────────────┬─────────────────────────────┘   │
+│                         │ orchestrates                     │
+│  ┌──────────────────────▼─────────────────────────────┐   │
+│  │       20 Specialist AI Agents (Gemini/Claude)      │   │
+│  └────────────────────────────────────────────────────┘   │
+└──────────────────────────────────────────────────────────┘
 ```
+
+### The one-sentence pitch:
+> *Other tools ask AI to write your code. Agenticana makes AI agents debate the architecture, audit the security, benchmark the performance — and only THEN writes the code, in a sandboxed clone, with automatic rollback if it fails.*
 
 ---
 
-## ✨ Features
+## ✨ What Agenticana Does
 
 ### 🧠 ReasoningBank — AI That Learns From Your Work
-Store past decisions as searchable vector memory. Next time you face a similar problem, Agenticana finds the pattern and **skips re-planning entirely** (Fast Path).
-
 ```bash
-# After solving a problem:
 python scripts/reasoning_bank.py record \
   --task "Add Stripe webhooks" \
   --decision "Use raw body parser before JSON middleware" \
   --outcome "Webhook signature verified correctly" \
   --success true
-
-# Next time you ask about payment integrations:
-# → similarity: 0.93 → Fast Path activated → 60% fewer tokens
+# Next time: similarity 0.93 → Fast Path → 60% fewer tokens
 ```
 
-### ⚡ Model Router — Stop Overpaying for Simple Tasks
-Automatically selects the right model tier based on task complexity. A typo fix doesn't need the same model as architecting a distributed system.
-
-```
-Fix a typo         → lite   model  (1¢)
-Add dark mode      → flash  model  (3¢)
-Architect platform → pro    model  (15¢)
-                                    ↑ 40% average savings
+### 🔀 Swarm Dispatcher — 20 Agents in Parallel
+```bash
+python scripts/agentica_cli.py swarm .Agentica/swarm_manifest.json
+# → Runs backend-specialist + security-auditor + test-engineer simultaneously
 ```
 
-### 🤖 20 Specialist Agents — The Right Expert for Every Task
-Each agent has deep domain expertise, coding rules, and boundaries. Copilot automatically picks the right one.
-
-```
-@frontend-specialist  → React, Tailwind, animations, no purple
-@backend-specialist   → APIs, databases, rate limiting
-@security-auditor     → OWASP, auth reviews, Firestore rules
-@debugger             → 5-layer root cause analysis
-@orchestrator         → Multi-agent planning
+### 🦅 Logic Simulacrum — AI Agents Debate Before Coding
+```bash
+python scripts/agentica_cli.py simulacrum "Should we use JWT or HttpOnly cookies?"
+# → backend-specialist, security-auditor, frontend-specialist debate in real-time
+# → Consensus reached → Winner logs the rationale
+# → ADR document auto-generated
 ```
 
-### 🔌 MCP Server — 11 Tools for Any MCP Host
-Works with **VS Code + GitHub Copilot**, **Claude Desktop**, **Cursor**, and any MCP-compatible host.
+### 🛡️ Guardian Mode — Pre-Commit AI Gate
+```bash
+python scripts/guardian_mode.py install
+# Every git commit is now intercepted:
+#   [1] Sentinel audit     → warns on issues
+#   [2] Python lint        → blocks on syntax errors
+#   [3] Secret scan        → blocks on hardcoded secrets
+```
 
+### 📝 NL Swarm — Plain English to Swarm
+```bash
+python scripts/nl_swarm.py "Add authentication to Django, audit it, and write tests" --run
+# → Auto-detects agents: security-auditor, backend-specialist, test-engineer
+# → Generates manifest → Dispatches swarm
+```
+
+### ✅ Proof-of-Work Commits — Trusted Code
+```bash
+python scripts/pow_commit.py sign
+# Trust Score: 85/100 (CERTIFIED)
+#   Debate:      YES — session d1a3705f
+#   Performance: OPTIMAL
+#   Guardian:    PASSED
+```
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- [Node.js 20+](https://nodejs.org)
+- [Python 3.11+](https://python.org)
+- [VS Code](https://code.visualstudio.com) with [GitHub Copilot](https://github.com/features/copilot)
+- Git
+
+### Option A: Clone & Setup
+```bash
+git clone https://github.com/ashrafmusa/AGENTICANA.git
+cd Agenticana
+
+# Windows
+powershell -ExecutionPolicy Bypass -File setup.ps1
+
+# Install MCP dependencies
+cd mcp && npm install && cd ..
+```
+
+### Option B: Install Guardian (any project)
+```bash
+# Copy Agenticana into your project, then:
+python scripts/guardian_mode.py install
+# Every commit is now Secretary Bird approved 🦅
+```
+
+### Activate MCP in VS Code
 ```json
 // .vscode/mcp.json
 {
@@ -87,56 +143,38 @@ Works with **VS Code + GitHub Copilot**, **Claude Desktop**, **Cursor**, and any
 }
 ```
 
-### 📦 Project-Aware — One Kit, All Your Projects
-Install into any project in 30 seconds. Each project gets its own learning memory.
-
-```bash
-npx Agenticana init                              # current directory
-npx Agenticana init --path d:\Projects\MyApp    # specific project
-npx Agenticana init --mode full                  # with local memory
+Then in Copilot Chat:
+```
+@backend-specialist build a REST API with auth
+@security-auditor review this auth flow
+@orchestrator plan the full payment system
 ```
 
 ---
 
-## 🚀 Quick Start
+## 📦 Phases P1 → P19
 
-### Prerequisites
-- [Node.js 20+](https://nodejs.org)
-- [Python 3.11+](https://python.org)
-- [VS Code](https://code.visualstudio.com) with [GitHub Copilot](https://github.com/features/copilot)
-
-### Option A: npx (Recommended)
-```bash
-# Install into your current project
-npx Agenticana init
-
-# Or into a specific project
-npx Agenticana init --path /path/to/your/project --mode full
-```
-
-### Option B: Clone & Setup
-```bash
-git clone https://github.com/ashrafmusa/AGENTICANA.git
-cd Agenticana
-
-# Windows
-powershell -ExecutionPolicy Bypass -File setup.ps1
-
-# macOS/Linux
-chmod +x setup.sh && ./setup.sh
-```
-
-### Activate in VS Code
-1. Open your project in VS Code
-2. Open Copilot Chat (`Ctrl+Alt+I`)
-3. Click **🔧 Tools** icon → Enable **"Agenticana"**
-4. Start using agents:
-
-```
-@debugger the /api/users 401 error even with valid token
-@frontend-specialist build a dashboard card with Recharts
-@orchestrator I need to add payments — plan it
-```
+| Phase | Feature | Script |
+|-------|---------|--------|
+| P1 | ReasoningBank (vector memory) | `reasoning_bank.py` |
+| P2 | Model Router (cost-aware) | `router_cli.py` |
+| P3 | Research Node | `research_node.py` |
+| P4 | Agent Exchange | `exchange/` |
+| P5 | Swarm Dispatcher | `swarm_dispatcher.py` |
+| P6 | Vector Soul Memory | `vector_memory.py` |
+| P7 | Soul Injection API | `soul_inject.py` |
+| P8 | Sentinel (self-healing) | `sentinel.py` |
+| P9 | Soul Bridge (cross-project) | `soul_bridge.py` |
+| P10 | Heartbeat Daemon | `heartbeat_daemon.py` |
+| P11 | Shadow Sandbox | `sandbox_manager.py` |
+| P12 | Logic Simulacrum | `simulacrum.py` |
+| P13 | Performance Pulse | `performance_pulse.py` |
+| P14 | Agentica CLI v2 | `agentica_cli.py` |
+| **P15** | **Real LLM Simulacrum** 🦅 | `real_simulacrum.py` |
+| **P16** | **Guardian Mode** 🦅 | `guardian_mode.py` |
+| **P17** | **NL Swarm** 🦅 | `nl_swarm.py` |
+| **P18** | **ADR Generator** 🦅 | `adr_generator.py` |
+| **P19** | **Proof-of-Work Commits** 🦅 | `pow_commit.py` |
 
 ---
 
@@ -169,20 +207,24 @@ chmod +x setup.sh && ./setup.sh
 
 ## 📊 vs. Competitors
 
-| Feature | **Agenticana v2** | Cursor Rules | Continue.dev | Cline | claude-flows |
-|---------|:-----------:|:------------:|:------------:|:-----:|:------------:|
-| Persistent memory | ✅ ReasoningBank | ❌ | ❌ | ❌ | ❌ |
-| Self-learning | ✅ Pattern distillation | ❌ | ❌ | ❌ | ❌ |
-| Model routing | ✅ Cost-aware | ❌ | ❌ | ❌ | ❌ |
-| Specialist agents | ✅ 20 agents | ❌ Single | ❌ Single | ❌ Single | ⚠️ Basic |
-| MCP server | ✅ 11 tools | ❌ | ⚠️ Limited | ❌ | ❌ |
-| VS Code + Copilot | ✅ Deep integration | ⚠️ Cursor only | ✅ | ⚠️ | ❌ |
-| Per-project memory | ✅ `.Agenticana/` | ❌ | ❌ | ❌ | ❌ |
-| Team knowledge sync | ✅ via git | ❌ | ❌ | ❌ | ❌ |
-| Token optimization | ✅ ~40% savings | ❌ | ❌ | ❌ | ❌ |
-| YAML agent specs | ✅ Schema-validated | ❌ | ❌ | ❌ | ❌ |
-| Zero infrastructure | ✅ JSON-based | ✅ | ✅ | ✅ | ✅ |
-| Open source | ✅ MIT | ✅ | ✅ | ✅ | ✅ |
+| Feature | **Agenticana v6** | OpenClaw | Cursor/Cline | Continue.dev |
+|---------|:-----------:|:--------:|:------------:|:------------:|
+| **AI agent debates (Simulacrum)** | ✅ Unique | ❌ | ❌ | ❌ |
+| **Pre-commit AI guardian** | ✅ Unique | ❌ | ❌ | ❌ |
+| **Proof-of-Work commits** | ✅ Unique | ❌ | ❌ | ❌ |
+| **Architecture Decision Records** | ✅ Auto-generated | ❌ | ❌ | ❌ |
+| **NL → Swarm manifest** | ✅ Unique | ❌ | ❌ | ❌ |
+| **Shadow Sandbox execution** | ✅ | ❌ | ❌ | ❌ |
+| **Parallel agents (Swarm)** | ✅ 20 agents | ❌ | ❌ Single | ❌ Single |
+| **Persistent memory** | ✅ ReasoningBank | ❌ | ❌ | ❌ |
+| **Cross-project memory** | ✅ Soul Bridge | ❌ | ❌ | ❌ |
+| **Multi-channel messaging** | ❌ | ✅ Best | ❌ | ❌ |
+| **Self-healing code** | ✅ Sentinel | ❌ | ❌ | ❌ |
+| **Model cost routing** | ✅ ~40% savings | ❌ | ❌ | ❌ |
+| **Performance benchmarking** | ✅ Pulse | ❌ | ❌ | ❌ |
+| **MCP server (11 tools)** | ✅ | ❌ | ❌ | ⚠️ Limited |
+| **Zero cloud required** | ✅ Fully local | ✅ | ❌ | ✅ |
+| **Open source (MIT)** | ✅ | ✅ | ✅ | ✅ |
 
 ---
 
@@ -190,30 +232,78 @@ chmod +x setup.sh && ./setup.sh
 
 ```mermaid
 graph TD
-    USER[👤 Developer] --> COPILOT[GitHub Copilot Chat]
-    COPILOT --> MCP[Agenticana MCP Server\n11 tools]
+    USER[Developer] --> CLI[Agentica CLI v2]
+    CLI --> DISP[Swarm Dispatcher]
+    CLI --> SIM[Logic Simulacrum]
+    CLI --> GUARD[Guardian Mode]
+    CLI --> NL[NL Swarm Parser]
 
-    MCP --> RB[🧠 ReasoningBank\nretrieve · record · distill]
-    MCP --> ROUTER[⚡ Model Router\nroute · stats]
-    MCP --> MEM[💾 Memory Store\nstore · search · consolidate]
-    MCP --> AGENTS[🤖 Agent Registry\nlist · get · skill_list]
+    DISP --> AGENTS[20 Specialist Agents]
+    SIM --> AGENTS
+    SIM --> ADR[ADR Generator]
+    GUARD --> SENTINEL[Sentinel]
+    GUARD --> POW[Proof-of-Work]
 
-    RB --> DECISIONS[(decisions.json\nVector memory)]
-    ROUTER --> CONFIG[(router/config.json\nComplexity thresholds)]
-    AGENTS --> YAMLS[(agents/*.yaml\n20 agent specs)]
+    AGENTS --> MCP[MCP Server - 11 tools]
+    MCP --> RB[ReasoningBank]
+    MCP --> ROUTER[Model Router]
+    MCP --> MEM[Soul Memory]
 
-    MCP --> PYTHON[Python Scripts\nreasoning_bank.py\nrouter_cli.py\ndistill_patterns.py]
+    DISP --> SANDBOX[Shadow Sandbox]
+    SANDBOX -.->|safe clone| AGENTS
 
-    style MCP fill:#1e293b,color:#f8fafc
-    style RB fill:#0f172a,color:#38bdf8
-    style ROUTER fill:#0f172a,color:#4ade80
-    style MEM fill:#0f172a,color:#f59e0b
-    style AGENTS fill:#0f172a,color:#a78bfa
+    style CLI fill:#1e293b,color:#f8fafc
+    style SIM fill:#0f172a,color:#fbbf24
+    style GUARD fill:#0f172a,color:#4ade80
+    style SANDBOX fill:#0f172a,color:#f87171
+    style POW fill:#0f172a,color:#38bdf8
 ```
 
 ---
 
-## 🛠️ MCP Tools Reference
+## 🛠️ CLI Reference
+
+```bash
+# ── Core Swarm ──────────────────────────────────────────
+python scripts/agentica_cli.py swarm manifest.json         # dispatch swarm
+python scripts/agentica_cli.py swarm manifest.json --shadow # sandboxed
+python scripts/nl_swarm.py "Add auth and write tests" --run # NL → swarm
+
+# ── Logic Simulacrum (AI Debate) ────────────────────────
+python scripts/agentica_cli.py simulacrum "Use REST or GraphQL?"
+python scripts/real_simulacrum.py --set-key YOUR_GEMINI_KEY  # enable live LLM
+python scripts/real_simulacrum.py "Your topic" --rounds 3
+
+# ── Guardian Mode ────────────────────────────────────────
+python scripts/guardian_mode.py install   # activate pre-commit hook
+python scripts/guardian_mode.py audit     # view last 5 audits
+python scripts/guardian_mode.py remove    # deactivate
+
+# ── Architecture Decision Records ───────────────────────
+python scripts/adr_generator.py --latest  # ADR from last debate
+python scripts/adr_generator.py --list    # list all sessions
+python scripts/adr_generator.py --all     # generate all ADRs
+
+# ── Proof-of-Work ────────────────────────────────────────
+python scripts/pow_commit.py sign         # sign current commit
+python scripts/pow_commit.py verify       # show latest attestation
+python scripts/pow_commit.py log          # attestation history
+
+# ── System Health ────────────────────────────────────────
+python scripts/agentica_cli.py pulse      # performance benchmark
+python scripts/agentica_cli.py sentinel   # self-healing audit
+python scripts/agentica_cli.py heartbeat  # start monitoring daemon
+python scripts/agentica_cli.py dashboard  # launch control center
+
+# ── Memory & Learning ────────────────────────────────────
+python scripts/reasoning_bank.py retrieve "pagination pattern" --k 5
+python scripts/reasoning_bank.py record --task "T" --decision "D" --outcome "O" --success true
+python scripts/router_cli.py "build a payment system"
+```
+
+---
+
+## 🔌 MCP Tools (11)
 
 | Tool | Description |
 |------|-------------|
@@ -227,7 +317,7 @@ graph TD
 | `memory_consolidate` | Prune stale entries, keep top-ranked |
 | `agent_list` | Browse all 20 agents with metadata |
 | `agent_get` | Get full spec for a specific agent |
-| `skill_list` | List all 36 skills by tier (Core/Domain/Utility) |
+| `skill_list` | List all 36 skills by tier |
 
 ---
 
@@ -235,65 +325,27 @@ graph TD
 
 | Doc | Description |
 |-----|-------------|
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Full system architecture and data flow |
-| [USAGE.md](USAGE.md) | Complete usage guide with CLI reference |
-| [HOW-TO-USE-ON-YOUR-PROJECT.md](HOW-TO-USE-ON-YOUR-PROJECT.md) | Installing into any project |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Full system architecture (P1–P19) |
+| [USAGE.md](USAGE.md) | Complete usage guide with all CLI flags |
 | [CHANGELOG.md](CHANGELOG.md) | Version history |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute |
-
----
-
-## 🔧 CLI Reference
-
-```bash
-# ReasoningBank
-python scripts/reasoning_bank.py retrieve "implement pagination" --k 5
-python scripts/reasoning_bank.py record --task "T" --decision "D" --outcome "O" --success true
-python scripts/reasoning_bank.py stats
-python scripts/reasoning_bank.py distill
-
-# Model Router
-python scripts/router_cli.py "build a payment system"
-python scripts/router_cli.py "fix a typo" --compact   # → MODEL=lite SCORE=1.0
-
-# Pattern Distillation
-python scripts/distill_patterns.py
-python scripts/distill_patterns.py --dry-run
-
-# Health Check
-python scripts/verify_all.py .
-
-# MCP Server
-cd mcp && node server.js
-```
-
----
-
-## 🧩 Skill Tiers
-
-| Tier | Skills | Load Strategy |
-|------|--------|---------------|
-| **1 — Core** | `clean-code`, `brainstorming`, `plan-writing`, `intelligent-routing`, `behavioral-modes`, `parallel-agents` | Always |
-| **2 — Domain** | `frontend-design`, `mobile-design`, `api-patterns`, `database-design`, `testing-patterns`, `architecture` + 4 more | Domain match |
-| **3 — Utility** | `seo-fundamentals`, `vulnerability-scanner`, `performance-profiling` + 23 more | Explicit need |
+| [docs/decisions/](docs/decisions/) | Auto-generated ADRs |
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ```bash
 # Add a new agent
 cp agents/frontend-specialist.yaml agents/your-agent.yaml
-# Edit the YAML, then validate:
-node scripts/lint-agents.js
+node scripts/lint-agents.js  # validate
 
 # Add a skill
-mkdir skills/your-skill
-# Create SKILL.md with frontmatter (see schemas/skill-schema.json)
+mkdir skills/your-skill && touch skills/your-skill/SKILL.md
 
-# Submit a PR — CI will validate all agents and skills automatically
+# Submit PR — Guardian Mode will auto-validate on merge
 ```
 
 ---
@@ -306,6 +358,8 @@ MIT © [Agenticana Contributors](LICENSE)
 
 <div align="center">
 
-**Made with ❤️ using Agenticana — [⭐ Star on GitHub](https://github.com/ashrafmusa/AGENTICANA)**
+**Made with 🦅 by the Secretary Bird — [⭐ Star on GitHub](https://github.com/ashrafmusa/AGENTICANA)**
+
+*"We don't react. We stomp, record, and move forward with proof."*
 
 </div>

@@ -6,43 +6,134 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [2.0.0] — 2026-03-01
+## [6.0.0] — 2026-03-03 🦅 Secretary Bird Edition
 
-### 🚀 Major Release — Agenticana v2
+### The Differentiators — Phases P15–P19
 
-#### Added
-- **ReasoningBank** — Vector-based decision memory with cosine similarity search. Stores past decisions, retrieves similar patterns, distills recurring solutions. Pre-seeded with 10 real decisions.
-- **Model Router** — Intelligent task complexity scoring (1-10). Auto-selects `lite/flash/pro/pro-extended` model. ~40% average token savings. Node.js engine with Python CLI wrapper.
-- **MCP Server** — 11 tools exposed via Model Context Protocol: `reasoningbank_retrieve`, `reasoningbank_record`, `reasoningbank_distill`, `router_route`, `router_stats`, `memory_store`, `memory_search`, `memory_consolidate`, `agent_list`, `agent_get`, `skill_list`.
-- **20 Agent YAML Specs** — All agents now have machine-readable YAML specifications (`agents/*.yaml`) validated against `schemas/agent-schema.json`.
-- **Memory Tools** — `memory_store`, `memory_search`, `memory_consolidate` with project-aware path resolution and score-based ranking.
-- **`npx Agenticana init`** — One-command project installation. Supports `lite`, `full`, and `link` modes.
-- **`Agenticana status`** — Health check CLI for all components.
-- **VS Code Deep Integration** — `.vscode/mcp.json`, `.vscode/settings.json` with Copilot custom instructions, `.vscode/launch.json` with debug configs.
-- **`.github/copilot-instructions.md`** — Auto-loaded by Copilot Chat, teaches it all 20 agents and coding rules.
-- **`install-to-project.ps1`** — Windows PowerShell project installer with lite/full/link modes.
-- **GitHub Actions CI** — Validates agents, skills, MCP modules, JSON/YAML syntax, and secret scanning on every push.
-- **GitHub Actions Release** — Automated releases on version tags with npm publishing.
-- **ARCHITECTURE.md** — Comprehensive system architecture document.
-- **3-Tier Skill System** — Skills categorized as Core (always), Domain (match), Utility (explicit). Strategy-aware loading: FULL/COMPRESSED/MINIMAL.
-- **`distill_patterns.py`** — Automated pattern distillation from decisions. Clusters by tag, scores by success rate.
-- **`verify_all.py`** — Full health check script for all Agenticana components.
-- **`schemas/agent-schema.json`** + **`schemas/skill-schema.json`** — JSON Schema validation for all agent and skill definitions.
-- **Token Optimization** — MINIMAL strategy (Tier-1 only) saves ~30% tokens. COMPRESSED saves ~15%. ReasoningBank Fast Path (similarity ≥ 0.85) saves ~60%.
-- **Self-Learning Loop** — Record decisions → distill patterns → Fast Path activates for similar tasks.
-- **Project-Local Memory** — `full` install mode adds `.Agenticana/` folder with project-specific ReasoningBank.
-- **Team Knowledge Sync** — `.Agenticana/memory/reasoning-bank/` committed to git shares patterns across team.
+> *"We don't react. We stomp, record, and move forward with proof."*
+> Agenticana becomes the first AI developer system to prove its work.
+
+#### Added — P15: Real LLM Simulacrum
+- `scripts/real_simulacrum.py` — Each agent (backend-specialist, security-auditor, etc.) calls a real Gemini API instance with a domain-specific system prompt
+- Agents genuinely debate architecture with opposing LLM opinions — not hardcoded responses
+- Graceful fallback to persona mode when no API key is set
+- `--set-key` flag to save Gemini key to `.Agentica/gemini.key`
+
+#### Added — P16: Guardian Mode
+- `scripts/guardian_mode.py` — Git pre-commit hook that intercepts every commit
+- **Check 1:** Sentinel audit (advisory — warns but does not block)
+- **Check 2:** Python syntax lint (blocking on error)
+- **Check 3:** Smart secret scan — detects real hardcoded secret values (len >20, not placeholder), not variable names
+- `guardian_mode.py install / remove / audit / status`
+- Logs every audit to `.Agentica/logs/guardian/`
+
+#### Added — P17: Natural Language Swarm
+- `scripts/nl_swarm.py` — Type plain English, get a swarm manifest
+- Keyword-based agent selection (22 trigger groups across 8 agents)
+- Intent detection: build / audit / test / deploy / optimise / document / debug / review
+- `--run` flag to immediately dispatch the generated swarm
+- `--shadow` flag for sandboxed execution
+
+#### Added — P18: ADR Generator
+- `scripts/adr_generator.py` — Converts Simulacrum session JSON into professional Architecture Decision Records
+- Saved to `docs/decisions/ADR-XXX-topic-slug.md`
+- Auto-numbered, includes vote tally, winning proposal, all constraints
+- `--latest` / `--list` / `--all` flags
+
+#### Added — P19: Proof-of-Work Commits
+- `scripts/pow_commit.py` — Signs every commit with a cryptographic attestation
+- Attestation proves: debate completed, performance benchmarked, guardian passed
+- Trust Score: 0–100 — CERTIFIED (≥70) / PARTIAL (≥40) / UNVERIFIED (<40)
+- Stored in `.Agentica/attestations/attest_<hash>_<ts>.json`
+- `pow_commit.py sign / verify / log`
 
 #### Changed
-- `GEMINI.md` updated with v2 protocols: Phase -1 (ReasoningBank), Step 0 (Model Router), Tier-Aware Skill Loading, Request Classifier table.
-- All agent `.md` files now have corresponding `.yaml` spec counterparts.
+- **Mascot:** Secretary Bird 🦅 replaces all lobster references (8 files purged)
+- `README.md` fully rewritten for v6.0 with P1–P19 phase table
+- Competitor table updated to include OpenClaw comparison
+- `scripts/rebrand_secretary_bird.py` — migration utility (can be run again if needed)
+- Zero lobster emoji or text remain in codebase (verified via grep)
 
-#### Architecture
-- **ReasoningBank storage:** JSON-based (zero infrastructure, portable)
-- **Embedding model:** `all-MiniLM-L6-v2` via `sentence-transformers` with TF-based fallback
-- **MCP transport:** stdio (Claude Desktop / VS Code) with HTTP stub for future
-- **Router engine:** Node.js with Python CLI fallback
-- **Agent specs:** YAML + JSON Schema validation
+---
+
+## [5.0.0] — 2026-03-03
+
+### Phases P12–P14 + MCP Fix
+
+#### Added — P12: Logic Simulacrum
+- `scripts/simulacrum.py` — 5-phase debate engine (opening → debate → proposal → vote → consensus)
+- 7 built-in agent personas with distinct domain biases
+- `quick_debate()` function for auto-agent selection based on topic keywords
+- Session logs saved to `.Agentica/logs/simulacrum/session_<id>.json`
+
+#### Added — P13: Performance Pulse
+- `scripts/performance_pulse.py` — Benchmarks 4 core Agenticana scripts × 3 runs each
+- Reports avg_time_ms, peak_memory_mb, status (OPTIMAL / WARN / ERROR)
+- Configurable thresholds. Results saved to `.Agentica/logs/performance/pulse_<ts>.json`
+
+#### Added — P14: Agentica CLI v2
+- `scripts/agentica_cli.py` — Unified command interface for all Agenticana tools
+- Commands: `swarm`, `sentinel`, `dashboard`, `bridge`, `simulacrum`, `pulse`, `sandbox`, `heartbeat`, `exchange`
+- ASCII Secretary Bird header art, no third-party deps, Windows UTF-8 safe
+
+#### Fixed
+- MCP Server `MODULE_NOT_FOUND`: resolved by running `npm install` in `mcp/`
+- Windows `UnicodeEncodeError` in simulacrum.py: UTF-8 stdout wrapper added
+- Recursive sandbox clone: removed `sandbox_manager.py init` from performance benchmarks
+
+---
+
+## [4.0.0] — 2026-03-02
+
+### Phases P9–P11 + Shadow Sandbox
+
+#### Added — P11: Shadow Sandbox
+- `scripts/sandbox_manager.py` — Git-based project clone for isolated execution
+- Runs Sentinel audit on shadow clone before merging to production
+- Full rollback support if audit fails
+- `--shadow` flag added to `swarm_dispatcher.py`
+
+#### Added — P9: Soul Bridge
+- `scripts/soul_bridge.py` — Cross-project memory sync
+- Reads from `.Agentica/bridge.json` to monitor linked external projects
+
+#### Added — P10: Heartbeat Daemon
+- `scripts/heartbeat_daemon.py` — Background health monitoring
+- Alerts on agent failures, memory anomalies, sentinel warnings
+
+---
+
+## [3.0.0] — 2026-03-01
+
+### Phases P6–P8 + Control Center
+
+#### Added — P8: Sentinel (Self-Healing)
+- `scripts/sentinel.py` — Autonomous code audit: security, lint, dead code
+- Accepts `--root` argument for auditing sandbox clones
+
+#### Added — P6: Vector Soul Memory
+- `scripts/vector_memory.py` — Semantic storage for agent soul data
+
+#### Added — P7: Soul Injection API + Dashboard
+- `scripts/soul_inject.py` — REST API for memory injection
+- `scripts/dashboard_api.py` — Control Center HTTP server (port 8080)
+- `dashboard/index.html` — Live monitoring dashboard with real-time refresh
+
+---
+
+## [2.0.0] — 2026-03-01
+
+### Major Release — ReasoningBank + Model Router + MCP
+
+#### Added
+- **ReasoningBank** — Vector-based decision memory with cosine similarity search
+- **Model Router** — Intelligent complexity scoring, ~40% token savings
+- **MCP Server** — 11 tools via Model Context Protocol
+- **20 Agent YAML Specs** — Machine-readable agent specifications
+- **Swarm Dispatcher (P5)** — Parallel agent execution with `--shadow`, `--dry-run`, `--timeout`
+- **3-Tier Skill System** — Core / Domain / Utility with strategy-aware loading
+- **`install-to-project.ps1`** — Windows project installer
+- **GitHub Actions CI** — Full validation pipeline
 
 ---
 
@@ -52,13 +143,16 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 #### Added
 - 20 specialist agent `.md` files with rules and personas
-- 36 skills organized into a 3-tier hierarchy
-- `GEMINI.md` — AI behavior protocol file
-- Basic `scripts/` directory with utility scripts
+- 36 skills organized into 3-tier hierarchy
+- `GEMINI.md` — AI behavior protocol
+- Basic `scripts/` directory
 - `.vscode/` configuration files
-- Initial agent routing via `intelligent-routing` skill
 
 ---
 
+[6.0.0]: https://github.com/ashrafmusa/AGENTICANA/releases/tag/v6.0.0
+[5.0.0]: https://github.com/ashrafmusa/AGENTICANA/releases/tag/v5.0.0
+[4.0.0]: https://github.com/ashrafmusa/AGENTICANA/releases/tag/v4.0.0
+[3.0.0]: https://github.com/ashrafmusa/AGENTICANA/releases/tag/v3.0.0
 [2.0.0]: https://github.com/ashrafmusa/AGENTICANA/releases/tag/v2.0.0
 [1.0.0]: https://github.com/ashrafmusa/AGENTICANA/releases/tag/v1.0.0
