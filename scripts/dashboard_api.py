@@ -118,7 +118,7 @@ def api_run():
 
     SCRIPT_MAP = {
         "intel":  ["python", str(BASE_DIR / "scripts" / "sovereign_intel.py")],
-        "evolve": ["python", str(BASE_DIR / "scripts" / "nl_swarm.py"), "Autonomous Evolution", "--intel", "--run"],
+        "evolve": ["python", str(BASE_DIR / "scripts" / "evolve.py")],
         "audit":  ["python", str(BASE_DIR / "scripts" / "verify_all.py"), "--url", "local"],
     }
 
