@@ -3,8 +3,9 @@ import socketserver
 import json
 import os
 from pathlib import Path
+from datetime import datetime
 
-# Agentica Control Center API (Hardened)
+# Agentica Control Center API (P22 Secretary Bird Edition)
 PORT = 8080
 AUTH_KEY_PATH = Path(".Agentica/auth.key")
 
@@ -32,6 +33,7 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(b'{"error": "Unauthorized"}')
             return
 
+        # 3. API Endpoints
         if self.path == '/api/status':
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')
@@ -39,20 +41,23 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Access-Control-Allow-Headers', 'X-Agentica-Auth')
             self.end_headers()
 
-            # Aggregate status
-            from datetime import datetime
             status = {
-                "project": "Agent Americana",
-                "version": "v4.0.0 (A.I.R EDITION)",
+                "project": "Agenticana",
+                "version": "v6.0.0 (SEC BIRD)",
                 "timestamp": datetime.now().isoformat(),
                 "heartbeat": self.get_latest_heartbeat(),
                 "swarm": self.get_latest_swarm(),
                 "registry": self.get_registry_count(),
-                "vector_memory": self.get_vector_count()
+                "vector_memory": self.get_vector_count(),
+                "intel": self.get_intel_data(),
+                "simulacrum": self.get_latest_simulacrum()
             }
             self.wfile.write(json.dumps(status).encode())
         else:
+            # Fallback for static files (dashboard/index.html etc)
             super().do_GET()
+
+    # --- Data Helpers ---
 
     def get_latest_heartbeat(self):
         path = Path(".Agentica/logs/heartbeat.log")
@@ -63,6 +68,26 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
         if path.exists():
             with open(path, 'r') as f:
                 return json.load(f)
+        return None
+
+    def get_intel_data(self):
+        path = Path(".Agentica/competitor_intel.json")
+        if path.exists():
+            with open(path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        return []
+
+    def get_latest_simulacrum(self):
+        log_dir = Path(".Agentica/logs/simulacrum")
+        if not log_dir.exists():
+            return None
+        logs = sorted(log_dir.glob("*.json"), key=os.path.getmtime, reverse=True)
+        if logs:
+            try:
+                with open(logs[0], 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except:
+                return None
         return None
 
     def get_registry_count(self):
@@ -81,6 +106,6 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     socketserver.TCPServer.allow_reuse_address = True
-    print(f"[*] Starting Agentica Control Center API on http://127.0.0.1:{PORT}...")
-    with socketserver.TCPServer(("127.0.0.1", PORT), DashboardHandler) as httpd:
+    print(f"[*] Starting Agenticana Dashboard API on http://127.0.0.1:{PORT}...")
+    with socketserver.TCPServer(("0.0.0.0", PORT), DashboardHandler) as httpd:
         httpd.serve_forever()
