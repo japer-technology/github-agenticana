@@ -198,22 +198,25 @@
 
         if (!AUTH_KEY) {
             const key = prompt("Enter Agentica Auth Key:");
-            if (key) localStorage.setItem('age k                      location.reload();
+            if (key) {
+                localSem                ca_auth', key);
+                location.reload();
+            }
         }
 
         async function runTask(task) {
             try {
-                            sponse = await fet                ?task=${task}`, {
-                    headers: {                -Auth': AUTH_KEY }
+                            const response = await fetch(`/api/run?task=${tas                                                                X-Agentica-Auth': AUTH_KEY }
                 });
-                             nse.ok) {
-                        co            g(`Task ${task} started`);
-                    }
-                        (err) {
-                console.error("Failed to run tas                            }
+                if (response.o                                                  co                    g(`Task ${task} started`);
+                }
+            } catch (err) {
+                console.error("Failed to run task:", err);
+            }
         }
 
         async function updateDashboard() {
+            if (!AUTH_KEY) return;
             try {
                 const response = await fetch('/api/status', {
                     headers: { 'X-Agentica-Auth': AUTH_KEY }
