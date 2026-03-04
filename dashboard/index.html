@@ -197,18 +197,67 @@
             }
         }
 
+            let fastPollTimer = null;
+
+            function startFastPoll() {
+                // Poll every 1s for 30s after a task starts, then return to 3s
+                clearInterval(fastPollTimer);
+                let ticks = 0;
+                fastPollTimer = setInterval(() => {
+                    updateDashboard();
+                    if (++ticks >= 30) clearInterval(fastPollTimer);
+                }, 1000);
+            }
+
+            function showFeedMessage(msg, cls = 'text-bird-accent') {
+                const feed = document.getElementById('swarm-feed');
+                if (!feed) return;
+                const div = document.createElement('div');
+                div.className = `flex gap-2 py-0.5 border-l-2 border-bird-accent pl-2`;
+                div.innerHTML = `<span class="text-slate-500">></span> <span class="${cls} font-bold">${msg}</span>`;
+                feed.prepend(div);
+                feed.scrollTop = 0;
+            }
+
         async function runTask(task) {
             if (!AUTH_KEY) return;
+
+            const labels = { intel: '🔍 Starting Competitor Scan...', evolve: '🧬 Initiating Self-Evolution...', audit: '🔒 Launching Health Audit...' };
+            const btnIds = { intel: 'btn-intel', evolve: 'btn-evolve', audit: 'btn-audit' };
+
+            // Visual feedback on button
+            const btn = document.getElementById(btnIds[task]);
+            if (btn) {
+                btn.disabled = true;
+                btn.style.opacity = '0.6';
+                btn.innerHTML = btn.innerHTML.replace(/^[^\s]+/, '⏳');
+            }
+
+            showFeedMessage(labels[task] || `Starting ${task}...`);
+
             try {
                 const response = await fetch('/api/run?task=' + task, {
                     headers: { 'X-Agentica-Auth': AUTH_KEY }
                 });
+                const result = await response.json();
                 if (response.ok) {
-                    console.log('Task ' + task + ' started');
+                    showFeedMessage(`✅ Task '${task}' launched — logs streaming below...`, 'text-green-400');
+                    startFastPoll(); // fast poll to catch output ASAP
+                } else {
+                    showFeedMessage(`❌ Error: ${result.error || 'Unknown'}`, 'text-red-400');
                 }
             } catch (err) {
+                showFeedMessage(`❌ Network error: ${err.message}`, 'text-red-400');
                 console.error("Failed to run task:", err);
             }
+
+            // Re-enable button after 5s
+            setTimeout(() => {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                }
+            }, 5000);
         }
 
         // Attach listeners after DOM load
