@@ -44,10 +44,9 @@ This is the living roadmap for Agenticana. Items marked **open** are available f
 **Idea:** Bridge speech-to-text with NL Swarm. "Stomp" OpenClaw by providing a professional CLI for voice-based development.
 
 ### P21: Swarm Result Merger
-**Status:** 🟡 Idea — needs design discussion
+**Status:** ✅ **SHIPPED (Autonomous Implementation)**
 **Idea:** When multiple agents run in parallel, automatically merge their outputs into a single coherent plan with conflict resolution.
-**Good for:** Python developer comfortable with JSON/text merging
-[Start a Discussion →](https://github.com/ashrafmusa/agenticana/discussions/new)
+**Implementation:** `scripts/swarm_merger.py` handles multi-agent markdown consolidation.
 
 ### P22: Web Dashboard UI
 **Status:** 🟡 Idea

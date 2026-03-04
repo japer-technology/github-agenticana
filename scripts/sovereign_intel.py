@@ -20,7 +20,14 @@ COMPETITORS = [
     "openclaw/openclaw",
     "cursor-labs/app",
     "continuedev/continue",
-    "cline/cline"
+    "cline/cline",
+    "Significant-Gravitas/AutoGPT",
+    "reworkd/AgentGPT",
+    "Pythagora-io/gpt-pilot",
+    "abi/screenshot-to-code",
+    "e2b-dev/code-interpreter",
+    "supermaven-inc/supermaven",
+    "TabbyML/tabby"
 ]
 
 def monitor_competitor(repo: str):
