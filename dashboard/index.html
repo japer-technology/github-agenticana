@@ -508,7 +508,8 @@
                     startStreaming(result.log_offset || 0);
                 } else {
                     const details = result.message ? `: ${result.message}` : '';
-                    appendFeedLine(`❌ ${result.error || 'Unknown error'}${details}`, 'text-red-400');
+                    const retryHint = result.retry_after_seconds ? ` (retry in ${result.retry_after_seconds}s)` : '';
+                    appendFeedLine(`❌ ${result.error || 'Unknown error'}${details}${retryHint}`, 'text-red-400');
                 }
             } catch (err) {
                 appendFeedLine(`❌ Network error: ${err.message}`, 'text-red-400');
@@ -826,7 +827,8 @@
                         data.logs.forEach(line => {
                             const div = document.createElement('div');
                             div.className = "flex gap-2 py-0.5 border-l border-white/5 pl-2 truncate";
-                            div.innerHTML = '<span class="text-slate-500">></span> <span class="text-slate-300">' + line.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</span>';
+                            const rendered = ansiToHtml(line);
+                            div.innerHTML = '<span class="text-slate-500">></span> <span class="text-slate-300">' + rendered + '</span>';
                             feed.appendChild(div);
                         });
                         feed.scrollTop = feed.scrollHeight;

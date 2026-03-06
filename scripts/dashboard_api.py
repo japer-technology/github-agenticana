@@ -23,6 +23,8 @@ EVOLUTION_LOG_PATH = BASE_DIR / ".Agentica" / "evolution_log.json"
 OPTIMIZATION_PATH = BASE_DIR / ".Agentica" / "optimization.json"
 
 BILLING_LOCK = threading.Lock()
+TASK_LOCK = threading.Lock()
+ACTIVE_TASKS: set[str] = set()
 
 DEFAULT_PLAN = "pro"
 VALID_PLANS = {"starter", "pro", "team", "enterprise"}
@@ -71,6 +73,8 @@ PERFORMANCE_OPTIMIZATION = {
     "debate_poll_ms": 1000,
     "debate_check_ms": 3000,
 }
+
+EVOLVE_COOLDOWN_SECONDS = 300
 
 app = Flask(__name__, static_folder=str(DASHBOARD_DIR))
 
@@ -286,6 +290,37 @@ def save_optimization_settings(settings: dict):
     OPTIMIZATION_PATH.write_text(json.dumps(settings, indent=2), encoding="utf-8")
 
 
+def is_working_tree_clean() -> bool:
+    """Return True only when the current git working tree has no pending changes."""
+    try:
+        result = subprocess.run(
+            ["git", "status", "--porcelain"],
+            capture_output=True,
+            text=True,
+            cwd=str(BASE_DIR),
+            timeout=10,
+        )
+        return result.returncode == 0 and not result.stdout.strip()
+    except Exception:
+        return False
+
+
+def get_last_evolve_timestamp() -> datetime | None:
+    ev = read_json(EVOLUTION_LOG_PATH, {})
+    if not isinstance(ev, dict):
+        return None
+    cycles = ev.get("cycles", [])
+    if not cycles:
+        return None
+    last = cycles[-1].get("timestamp")
+    if not last:
+        return None
+    try:
+        return datetime.fromisoformat(str(last))
+    except Exception:
+        return None
+
+
 # ── Routes ────────────────────────────────────────────────────────────────────
 
 @app.route("/")
@@ -357,6 +392,34 @@ def api_run():
         print(f"[ERROR] Unknown task: '{task}' — valid: {list(SCRIPT_MAP.keys())}")
         return jsonify({"error": "Task not found", "task": task, "valid": list(SCRIPT_MAP.keys())}), 404
 
+    with TASK_LOCK:
+        if task in ACTIVE_TASKS:
+            return jsonify({
+                "error": "Task already running",
+                "task": task,
+                "message": f"Task '{task}' is already in progress.",
+            }), 409
+
+    if task == "evolve":
+        if not is_working_tree_clean():
+            return jsonify({
+                "error": "Working tree not clean",
+                "task": task,
+                "message": "Commit or stash local changes before running self-evolve.",
+            }), 409
+
+        last_ts = get_last_evolve_timestamp()
+        if last_ts is not None:
+            age = (datetime.now() - last_ts).total_seconds()
+            if age < EVOLVE_COOLDOWN_SECONDS:
+                wait_seconds = int(EVOLVE_COOLDOWN_SECONDS - age)
+                return jsonify({
+                    "error": "Evolve cooldown active",
+                    "task": task,
+                    "retry_after_seconds": wait_seconds,
+                    "message": f"Wait {wait_seconds}s before the next evolution cycle.",
+                }), 429
+
     if not is_feature_allowed(plan, task=task):
         record_billing_event(
             event_type="run",
@@ -384,31 +447,38 @@ def api_run():
     start_time = time.time()
     record_billing_event(event_type="run", action=task, plan=plan, status="started")
 
+    with TASK_LOCK:
+        ACTIVE_TASKS.add(task)
+
     proc = subprocess.Popen(cmd, stdout=log_file_handle, stderr=log_file_handle, cwd=str(BASE_DIR), env=env)
     print(f"[EXEC] Launched: {' '.join(cmd)}")
 
     # ── Background watcher: fires post-commit hook when task finishes ──────────
     def watch_and_commit(process, lf, t):
-        process.wait()  # block until task subprocess exits
-        duration_ms = int((time.time() - start_time) * 1000)
-        task_status = "success" if process.returncode == 0 else "failed"
-        record_billing_event(
-            event_type="run",
-            action=t,
-            plan=plan,
-            status=task_status,
-            duration_ms=duration_ms,
-            metadata={"returncode": process.returncode},
-        )
-        lf.write(f"\n--- Task '{t}' completed. Running auto-commit hook... ---\n")
-        lf.flush()
-        hook_cmd = ["python", str(BASE_DIR / "scripts" / "post_task_commit.py"), t]
-        hook = subprocess.Popen(hook_cmd, stdout=lf, stderr=lf, cwd=str(BASE_DIR), env=env)
-        hook.wait()
-        lf.write(f"--- Auto-commit hook done for '{t}' ---\n")
-        lf.flush()
-        lf.close()
-        print(f"[HOOK] Post-commit done for task: {t}")
+        try:
+            process.wait()  # block until task subprocess exits
+            duration_ms = int((time.time() - start_time) * 1000)
+            task_status = "success" if process.returncode == 0 else "failed"
+            record_billing_event(
+                event_type="run",
+                action=t,
+                plan=plan,
+                status=task_status,
+                duration_ms=duration_ms,
+                metadata={"returncode": process.returncode},
+            )
+            lf.write(f"\n--- Task '{t}' completed. Running auto-commit hook... ---\n")
+            lf.flush()
+            hook_cmd = ["python", str(BASE_DIR / "scripts" / "post_task_commit.py"), t]
+            hook = subprocess.Popen(hook_cmd, stdout=lf, stderr=lf, cwd=str(BASE_DIR), env=env)
+            hook.wait()
+            lf.write(f"--- Auto-commit hook done for '{t}' ---\n")
+            lf.flush()
+            print(f"[HOOK] Post-commit done for task: {t}")
+        finally:
+            with TASK_LOCK:
+                ACTIVE_TASKS.discard(t)
+            lf.close()
 
     watcher = threading.Thread(target=watch_and_commit, args=(proc, log_file_handle, task), daemon=True)
     watcher.start()
