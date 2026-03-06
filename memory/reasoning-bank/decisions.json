@@ -2,7 +2,7 @@
   "version": "2.0",
   "description": "Agenticana ReasoningBank — stores past agent decisions for pattern reuse",
   "last_consolidated": null,
-  "total_decisions": 37,
+  "total_decisions": 44,
   "decisions": [
     {
       "id": "rb-001",
@@ -1080,6 +1080,217 @@
         "firebase-placeholder",
         "accreditex"
       ]
+    },
+    {
+      "id": "rb-109ae29d",
+      "timestamp": "2026-03-05T03:58:58.473778+00:00",
+      "task": "Fix ReferenceError: isOpen not defined in CommentsPanel",
+      "task_type": "user-recorded",
+      "agent": "unknown",
+      "decision": "Removed invalid isOpen check and onClose usage from CommentsPanel.tsx. Visibility and close logic are handled by parent modal (DocumentEditorModal).",
+      "outcome": "ReferenceError resolved, CommentsPanel now renders correctly, no TypeScript errors.",
+      "success": true,
+      "tokens_used": 0,
+      "model_used": "unknown",
+      "embedding": [
+        0.14285714285714285,
+        0.14285714285714285,
+        0.14285714285714285,
+        0.14285714285714285,
+        0.14285714285714285,
+        0.14285714285714285,
+        0.14285714285714285
+      ],
+      "tags": [
+        "CommentsPanel",
+        "ReferenceError",
+        "React",
+        "modal",
+        "accreditex"
+      ]
+    },
+    {
+      "id": "rb-939a4e03",
+      "timestamp": "2026-03-05T17:23:10.581006+00:00",
+      "task": "Enhance Document Editor & CommentsPanel accessibility and UX",
+      "task_type": "user-recorded",
+      "agent": "unknown",
+      "decision": "Added ARIA roles, focus styles, loading spinners, inline error feedback, help button, translation keys, and comments close callback. Updated i18n and improved button contrast and labels.",
+      "outcome": "UI/UX improvements implemented, built and deployed without errors. Components now more accessible and informative.",
+      "success": true,
+      "tokens_used": 0,
+      "model_used": "unknown",
+      "embedding": [
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125
+      ],
+      "tags": [
+        "DocumentEditorModal",
+        "CommentsPanel",
+        "accessibility",
+        "aria",
+        "ux",
+        "accreditex"
+      ]
+    },
+    {
+      "id": "rb-755f7633",
+      "timestamp": "2026-03-05T17:45:43.087533+00:00",
+      "task": "Fix Document Editor help button causing page restart",
+      "task_type": "user-recorded",
+      "agent": "unknown",
+      "decision": "Updated help button in DocumentEditorModal to type=\"button\" and added preventDefault/stopPropagation plus safe window.open options to avoid accidental form submission/navigation.",
+      "outcome": "Help button no longer submits parent form or reloads the editor page; build passes.",
+      "success": true,
+      "tokens_used": 0,
+      "model_used": "unknown",
+      "embedding": [
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125
+      ],
+      "tags": [
+        "DocumentEditorModal",
+        "help-button",
+        "form-submit",
+        "ui-bug",
+        "accreditex"
+      ]
+    },
+    {
+      "id": "rb-1eed665c",
+      "timestamp": "2026-03-05T17:51:10.195863+00:00",
+      "task": "Fix Document Editor Help opening new page",
+      "task_type": "user-recorded",
+      "agent": "unknown",
+      "decision": "Replaced window.open('/help#documents', '_blank') with an in-modal help popover toggled by local state (showHelpTooltip), including quick tips and shortcut access.",
+      "outcome": "Help button now keeps users in Document Editor and no longer opens a new page/tab. Build and hosting deploy both succeeded.",
+      "success": true,
+      "tokens_used": 0,
+      "model_used": "unknown",
+      "embedding": [
+        0.14285714285714285,
+        0.14285714285714285,
+        0.14285714285714285,
+        0.14285714285714285,
+        0.14285714285714285,
+        0.14285714285714285,
+        0.14285714285714285
+      ],
+      "tags": [
+        "DocumentEditorModal",
+        "help-popover",
+        "ux-fix",
+        "frontend",
+        "accreditex"
+      ]
+    },
+    {
+      "id": "rb-19140b51",
+      "timestamp": "2026-03-05T18:47:53.915150+00:00",
+      "task": "Fix CommentsPanel appearing outside Document Editor modal",
+      "task_type": "user-recorded",
+      "agent": "frontend-specialist",
+      "decision": "Changed mobile comments panel from fixed positioning (fixed inset-0 z-50) to absolute positioning (absolute inset-0 z-10) and added relative to parent main container. This keeps comments within modal's positioning context instead of viewport level.",
+      "outcome": "Comments panel now properly contained within Document Editor modal on both mobile and desktop. Build passed, deployed successfully to https://accreditex.web.app",
+      "success": true,
+      "tokens_used": 0,
+      "model_used": "unknown",
+      "embedding": [
+        0.14285714285714285,
+        0.14285714285714285,
+        0.14285714285714285,
+        0.14285714285714285,
+        0.14285714285714285,
+        0.14285714285714285,
+        0.14285714285714285
+      ],
+      "tags": [
+        "DocumentEditorModal",
+        "CommentsPanel",
+        "layout",
+        "positioning",
+        "fixed-vs-absolute",
+        "z-index",
+        "accreditex",
+        "react"
+      ]
+    },
+    {
+      "id": "rb-03daef94",
+      "timestamp": "2026-03-05T19:26:57.733142+00:00",
+      "task": "Implement all Document Editor improvements from feature audit (Compliance Checker, Change Tracking, DOCX Enhancement)",
+      "task_type": "user-recorded",
+      "agent": "frontend-specialist",
+      "decision": "Implemented complete Document Editor improvements suite: (1) DocumentComplianceService with JCI/CBAHI scoring, structure validation, language analysis, readability scoring, and AI-powered suggestions; (2) DocumentAuditPanel component with real-time compliance analysis, issue detection, and report export; (3) DocumentChangeTrackerService for edit history, audit trails, and change statistics; (4) Enhanced DOCX export with metadata, image embedding, table styling, and multiple heading levels; (5) Integration into DocumentEditorModal with new Audit button and bilingual translations",
+      "outcome": "All improvements implemented and deployed. Build succeeded with no errors. Firebase hosting deployment successful to https://accreditex.web.app. New features: instant compliance scoring (0-100%), structural validation against 8 required sections, language compliance detection, readability analysis (Flesch-Kincaid), AI-powered improvement suggestions (requires selection), audit trail with user tracking and timestamps, enhanced DOCX export with proper metadata and optional image embedding",
+      "success": true,
+      "tokens_used": 0,
+      "model_used": "unknown",
+      "embedding": [
+        0.07142857142857142,
+        0.07142857142857142,
+        0.07142857142857142,
+        0.07142857142857142,
+        0.07142857142857142,
+        0.07142857142857142,
+        0.07142857142857142,
+        0.07142857142857142,
+        0.07142857142857142,
+        0.07142857142857142,
+        0.07142857142857142,
+        0.07142857142857142,
+        0.07142857142857142,
+        0.07142857142857142
+      ],
+      "tags": [
+        "DocumentEditor",
+        "compliance-checker",
+        "audit-trail",
+        "docx-export",
+        "accreditex",
+        "quality-assurance",
+        "document-management"
+      ]
+    },
+    {
+      "id": "rb-ca67fb1e",
+      "timestamp": "2026-03-06T16:11:13.840656+00:00",
+      "task": "Fix MCP tool interface mismatches with Python scripts",
+      "task_type": "user-recorded",
+      "agent": "orchestrator",
+      "decision": "Created wrapper scripts (quick_consensus.py and adr_manual.py) that match MCP tool expectations instead of modifying existing scripts or removing tools. This preserves existing functionality while adding new capabilities.",
+      "outcome": "All 28 MCP tools now have correct CLI interfaces. Added quick consensus validation and manual ADR creation utilities to Agenticana toolkit. Zero breaking changes to existing scripts.",
+      "success": true,
+      "tokens_used": 0,
+      "model_used": "unknown",
+      "embedding": [
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125
+      ],
+      "tags": [
+        "mcp",
+        "self-evolution",
+        "wrapper-pattern",
+        "interface-adaptation"
+      ]
     }
   ],
   "patterns": [
@@ -1555,6 +1766,20 @@
       ],
       "tags": [
         "waitFor-pattern"
+      ]
+    },
+    {
+      "id": "pat-f7ad397d",
+      "name": "Commentspanel Pattern",
+      "pattern": "Removed invalid isOpen check and onClose usage from CommentsPanel.tsx. Visibility and close logic are handled by parent modal (DocumentEditorModal).",
+      "frequency": 2,
+      "avg_success_rate": 1.0,
+      "distilled_from": [
+        "rb-109ae29d",
+        "rb-939a4e03"
+      ],
+      "tags": [
+        "CommentsPanel"
       ]
     }
   ]

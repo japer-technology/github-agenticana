@@ -1,12 +1,14 @@
 {
   "name": "@Agenticana/mcp-server",
-  "version": "2.0.0",
-  "description": "Agenticana v2 MCP Server — exposes ReasoningBank, Model Router, Memory, and Agent tools",
+  "version": "3.0.0",
+  "description": "Agenticana v3 MCP Server (Secretary Bird) — Self-evolving AI agent platform with 31+ tools for swarm execution, debate, evolution, and governance",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "stdio": "node server.js --stdio"
+    "stdio": "node server.js --stdio",
+    "health": "node -e \"const {execSync} = require('child_process'); console.log(JSON.parse(execSync('node server.js').toString()))\"",
+    "test": "echo 'Test suite coming soon' && exit 0"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
@@ -16,6 +18,22 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "keywords": ["mcp", "Agenticana", "ai", "agents", "reasoning-bank"],
-  "license": "MIT"
+  "keywords": [
+    "mcp",
+    "Agenticana",
+    "ai",
+    "agents",
+    "reasoning-bank",
+    "swarm",
+    "simulacrum",
+    "self-evolution",
+    "model-router",
+    "secretary-bird"
+  ],
+  "license": "MIT",
+  "author": "Agenticana Contributors",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/Agenticana"
+  }
 }

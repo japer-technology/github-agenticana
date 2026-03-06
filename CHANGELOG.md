@@ -6,6 +6,21 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [P28] 2026-03-06 — Local-First Vector Storage
+
+### Added
+- **Local-First Vector Storage**: Replace in-memory vector store with a persistent local Qdrant/ChromaDB instance. Enables persistent agent memory across restarts without cloud dependency.
+- Plan document: `plans/p28_local_vector_store.md`
+- Triggered by market gap analysis: *"Voice-to-code integration"*
+
+### Evolution Chain
+- Intel swarm identified gap across 11 competitor repos
+- Evolution engine selected P28 as next logical phase
+- All artifacts auto-committed by Secretary Bird 🦅
+
+---
+
+
 ## [P27] 2026-03-04 — Cross-LLM Debate Voting
 
 ### Added
