@@ -20,6 +20,7 @@ LOG_PATH = BASE_DIR / ".Agentica" / "logs" / "dashboard_action.log"
 BILLING_EVENTS_PATH = BASE_DIR / ".Agentica" / "billing_events.jsonl"
 SUBSCRIPTION_PATH = BASE_DIR / ".Agentica" / "subscription.json"
 EVOLUTION_LOG_PATH = BASE_DIR / ".Agentica" / "evolution_log.json"
+OPTIMIZATION_PATH = BASE_DIR / ".Agentica" / "optimization.json"
 
 BILLING_LOCK = threading.Lock()
 
@@ -54,6 +55,22 @@ PRICING_MODEL = {
 }
 
 EVOLUTION_PHASE_ORDER = ["P26", "P27", "P28", "P29", "P30"]
+
+DEFAULT_OPTIMIZATION = {
+    "economy_mode": True,
+    "status_poll_ms": 10000,
+    "log_poll_ms": 2500,
+    "debate_poll_ms": 2000,
+    "debate_check_ms": 5000,
+}
+
+PERFORMANCE_OPTIMIZATION = {
+    "economy_mode": False,
+    "status_poll_ms": 3000,
+    "log_poll_ms": 1000,
+    "debate_poll_ms": 1000,
+    "debate_check_ms": 3000,
+}
 
 app = Flask(__name__, static_folder=str(DASHBOARD_DIR))
 
@@ -242,6 +259,33 @@ def get_latest_simulacrum():
     return read_json(logs[0]) if logs else None
 
 
+def get_optimization_settings() -> dict:
+    """Load optimization settings with safe defaults."""
+    cfg = read_json(OPTIMIZATION_PATH, {})
+    if not isinstance(cfg, dict):
+        cfg = {}
+
+    merged = dict(DEFAULT_OPTIMIZATION)
+    for key in DEFAULT_OPTIMIZATION:
+        if key in cfg:
+            merged[key] = cfg[key]
+
+    # Ensure integer intervals are valid.
+    for key in ("status_poll_ms", "log_poll_ms", "debate_poll_ms", "debate_check_ms"):
+        try:
+            merged[key] = max(500, int(merged[key]))
+        except Exception:
+            merged[key] = DEFAULT_OPTIMIZATION[key]
+
+    merged["economy_mode"] = bool(merged.get("economy_mode", True))
+    return merged
+
+
+def save_optimization_settings(settings: dict):
+    OPTIMIZATION_PATH.parent.mkdir(parents=True, exist_ok=True)
+    OPTIMIZATION_PATH.write_text(json.dumps(settings, indent=2), encoding="utf-8")
+
+
 # ── Routes ────────────────────────────────────────────────────────────────────
 
 @app.route("/")
@@ -288,6 +332,7 @@ def api_status():
         "logs": get_recent_logs(),
         "billing": summarize_billing(plan),
         "evolution": get_evolution_status(),
+        "optimization": get_optimization_settings(),
     }
     return jsonify(status)
 
@@ -531,6 +576,28 @@ def api_billing_summary():
 
     plan = resolve_plan()
     return jsonify(summarize_billing(plan))
+
+
+@app.route("/api/optimization", methods=["GET", "POST"])
+def api_optimization():
+    if not check_auth():
+        return jsonify({"error": "Unauthorized"}), 401
+
+    if request.method == "GET":
+        return jsonify(get_optimization_settings())
+
+    body = request.get_json(silent=True) or {}
+    mode = str(body.get("mode", "")).strip().lower()
+
+    if mode == "economy":
+        save_optimization_settings(dict(DEFAULT_OPTIMIZATION))
+        return jsonify({"status": "updated", "optimization": get_optimization_settings()})
+
+    if mode == "performance":
+        save_optimization_settings(dict(PERFORMANCE_OPTIMIZATION))
+        return jsonify({"status": "updated", "optimization": get_optimization_settings()})
+
+    return jsonify({"error": "Invalid mode", "valid": ["economy", "performance"]}), 400
 
 
 if __name__ == "__main__":

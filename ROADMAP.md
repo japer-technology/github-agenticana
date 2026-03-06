@@ -36,6 +36,7 @@ This is the living roadmap for Agenticana. Items marked **open** are available f
 | P28 | Local-First Vector Storage | ✅ Auto-Evolved 2026-03-06 |
 | P29 | GitHub Actions CI Agent | ✅ Auto-Evolved 2026-03-06 |
 | P30 | Agent Performance Leaderboard | ✅ Auto-Evolved 2026-03-06 |
+| P26+ | Voice-to-Code Bridge (Enhanced) | ✅ Auto-Evolved 2026-03-06 |
 | P22 | Sovereign Dashboard — Flask API + live log streaming | ✅ Shipped v7.0 |
 
 ---

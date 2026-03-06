@@ -216,6 +216,10 @@
                             class="w-full bg-white/10 text-white border border-white/20 font-bold py-4 rounded-2xl hover:bg-white/20 transition-all">
                             🛡️ Health Audit
                         </button>
+                        <button id="btn-economy"
+                            class="w-full bg-black/20 text-white border border-white/30 font-bold py-3 rounded-2xl hover:bg-black/30 transition-all">
+                            💡 Economy Mode: ON
+                        </button>
                     </div>
                 </section>
 
@@ -305,6 +309,11 @@
         let logOffset = 0;
         let streamTimer = null;
         let isStreaming = false;
+        let statusTimer = null;
+        let statusPollMs = 10000;
+        let logPollMs = 2500;
+        let debatePollMs = 2000;
+        let debateCheckMs = 5000;
 
         // ── Feed helpers ──────────────────────────────────────────────────────
         function appendFeedLine(text, cls = 'text-slate-300') {
@@ -421,9 +430,57 @@
             if (isStreaming) return;
             isStreaming = true;
             clearInterval(streamTimer);
-            streamTimer = setInterval(pollLogs, 1000);
+            streamTimer = setInterval(pollLogs, logPollMs);
             // Stop after 90s
             setTimeout(() => { clearInterval(streamTimer); isStreaming = false; }, 90000);
+        }
+
+        function applyOptimizationSettings(opt) {
+            if (!opt) return;
+            statusPollMs = Number(opt.status_poll_ms || statusPollMs);
+            logPollMs = Number(opt.log_poll_ms || logPollMs);
+            debatePollMs = Number(opt.debate_poll_ms || debatePollMs);
+            debateCheckMs = Number(opt.debate_check_ms || debateCheckMs);
+
+            const econBtn = document.getElementById('btn-economy');
+            if (econBtn) {
+                const isEconomy = Boolean(opt.economy_mode);
+                econBtn.textContent = isEconomy ? '💡 Economy Mode: ON' : '⚡ Economy Mode: OFF';
+                econBtn.className = isEconomy
+                    ? 'w-full bg-black/20 text-white border border-white/30 font-bold py-3 rounded-2xl hover:bg-black/30 transition-all'
+                    : 'w-full bg-white/20 text-white border border-white/30 font-bold py-3 rounded-2xl hover:bg-white/30 transition-all';
+            }
+
+            if (statusTimer) {
+                clearInterval(statusTimer);
+                statusTimer = setInterval(updateDashboard, statusPollMs);
+            }
+        }
+
+        async function toggleEconomyMode() {
+            if (!AUTH_KEY) return;
+            const btn = document.getElementById('btn-economy');
+            const turnOnEconomy = btn ? !btn.textContent.includes('ON') : true;
+            const mode = turnOnEconomy ? 'economy' : 'performance';
+            try {
+                const r = await fetch('/api/optimization', {
+                    method: 'POST',
+                    headers: {
+                        'X-Agentica-Auth': AUTH_KEY,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ mode })
+                });
+                const data = await r.json();
+                if (r.ok && data.optimization) {
+                    applyOptimizationSettings(data.optimization);
+                    appendFeedLine(`✅ Optimization mode set to ${mode.toUpperCase()}`, 'text-green-400');
+                } else {
+                    appendFeedLine(`❌ Could not set optimization mode`, 'text-red-400');
+                }
+            } catch (err) {
+                appendFeedLine(`❌ Optimization toggle failed: ${err.message}`, 'text-red-400');
+            }
         }
 
         // ── Task runner ────────────────────────────────────────────────────────
@@ -653,8 +710,8 @@
                     debateActive = true;
                     clearInterval(debateStreamTimer);
                     clearInterval(debateCheckTimer);
-                    debateStreamTimer = setInterval(debatePollLogs, 1000);
-                    debateCheckTimer = setInterval(checkDebateComplete, 3000);
+                    debateStreamTimer = setInterval(debatePollLogs, debatePollMs);
+                    debateCheckTimer = setInterval(checkDebateComplete, debateCheckMs);
                     // Auto timeout after 3 mins
                     setTimeout(() => { clearInterval(debateStreamTimer); clearInterval(debateCheckTimer); }, 180000);
                 } else {
@@ -675,6 +732,7 @@
             document.getElementById('btn-evolve')?.addEventListener('click', () => runTask('evolve'));
             document.getElementById('btn-audit')?.addEventListener('click', () => runTask('audit'));
             document.getElementById('btn-debate')?.addEventListener('click', launchDebate);
+            document.getElementById('btn-economy')?.addEventListener('click', toggleEconomyMode);
         });
 
         async function updateDashboard() {
@@ -704,6 +762,9 @@
 
                 const st = document.getElementById('status-text');
                 if (st) st.innerText = "SYSTEM SYNCED";
+
+                // Optimization mode / polling profile
+                applyOptimizationSettings(data.optimization || null);
 
                 // Evolution button label
                 const evolveBtn = document.getElementById('btn-evolve');
@@ -779,7 +840,7 @@
             }
         }
 
-        setInterval(updateDashboard, 3000);
+        statusTimer = setInterval(updateDashboard, statusPollMs);
         updateDashboard();
     </script>
 </body>

@@ -6,6 +6,21 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [P26+] 2026-03-06 — Voice-to-Code Bridge (Enhanced)
+
+### Added
+- **Voice-to-Code Bridge (Enhanced)**: Allow users to describe code changes in spoken/written natural language. The system transcribes and pipes input directly to NL Swarm for agent dispatch.
+- Plan document: `plans/p26_voice_to_code.md`
+- Triggered by market gap analysis: *"Voice-to-code integration"*
+
+### Evolution Chain
+- Intel swarm identified gap across 11 competitor repos
+- Evolution engine selected P26+ as next logical phase
+- All artifacts auto-committed by Secretary Bird 🦅
+
+---
+
+
 ## [P30] 2026-03-06 — Agent Performance Leaderboard
 
 ### Added
